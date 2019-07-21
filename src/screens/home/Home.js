@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import './Home.css';
 import Header from '../../common/header/Header';
-import { withStyles } from '@material-ui/core/styles';
 import moviesData from '../../common/movieData';
+import Details from '../../screens/details/Details';
 import genres from '../../common/genres';
 import artists from '../../common/artists';
+import { withStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -19,6 +21,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+
 
 
 
@@ -56,7 +60,7 @@ class Home extends Component {
 
     constructor(){
         super();
-        this.state ={
+        this.state = {
             movieName: "",
             genres: [],
             artists: []
@@ -76,7 +80,9 @@ class Home extends Component {
         this.setState({ artists: event.target.value });
     }
 
-
+    movieClickHandler = (movieId) => {
+        ReactDOM.render(<Details movieId={movieId} />, document.getElementById('root'));
+    }
 
 
     render() {
@@ -100,7 +106,7 @@ class Home extends Component {
                     <div className="left">
                         <GridList cellHeight={350} cols={4} className={classes.gridListMain}>
                             {moviesData.map(movie => (
-                                <GridListTile className="released-movie-grid-item" key={"grid" + movie.id}>
+                                <GridListTile onClick={() => this.movieClickHandler(movie.id)} className="released-movie-grid-item" key={"grid" + movie.id}>
                                     <img src={movie.poster_url} className="movie-poster" alt={movie.title} />
                                     <GridListTileBar
                                         title={movie.title}
@@ -170,6 +176,23 @@ class Home extends Component {
                                         InputLabelProps={{ shrink: true }}
                                     />
                                 </FormControl>
+
+                                <FormControl className={classes.formControl}>
+                                    <TextField
+                                        id="releaseDateEnd"
+                                        label="Release Date End"
+                                        type="date"
+                                        defaultValue=""
+                                        InputLabelProps={{ shrink: true }}
+                                    />
+                                </FormControl>    
+
+                                 <br /><br />
+                                <FormControl className={classes.formControl}>
+                                    <Button variant="contained" color="primary">
+                                        APPLY
+                                    </Button>
+                                </FormControl>  
                                 </CardContent>
                             </Card>
                     </div>
